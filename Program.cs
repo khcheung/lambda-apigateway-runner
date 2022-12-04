@@ -1,4 +1,3 @@
-﻿using static System.Net.WebRequestMethods;
 using System;
 using System.Text;
 using System.IO.Compression;
@@ -124,6 +123,7 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);        
         builder.Services.AddSingleton<[CLASSNAME]>();
+        builder.Services.AddScoped<RunnerLogger>();
         var app = builder.Build();
 
         app.MapPost(""/2015-03-31/functions/{functionName}/invocations"",
@@ -136,6 +136,8 @@ public static class Program
                     requestId = Guid.NewGuid().ToString().ToLower();
                 }
 
+                var logger = context.RequestServices.GetService<RunnerLogger>()!;
+
                 var lambdaContext = new RunnerContext()
                 {
                     AwsRequestId = requestId,
@@ -143,7 +145,8 @@ public static class Program
                     FunctionVersion = ""default"",
                     InvokedFunctionArn = $""arn:aws:lambda:ap-local-1:000000000:{functionName}"",
                     MemoryLimitInMB = 128,
-                    RemainingTime = new TimeSpan(0, 30, 0)
+                    RemainingTime = new TimeSpan(0, 30, 0),
+                    Logger =  logger
                 };
 
                 var bodyLength = context.Request.Headers.ContentLength ?? 0;
@@ -187,6 +190,25 @@ internal class RunnerContext : ILambdaContext
     public string LogStreamName { get; set; } = null!;
     public int MemoryLimitInMB { get; set; } = 128;
     public TimeSpan RemainingTime { get; set; } = new TimeSpan(0, 30, 0);
+}
+
+internal class RunnerLogger : ILambdaLogger
+{
+    private ILogger<RunnerLogger> mLogger = null!;
+    public RunnerLogger(ILogger<RunnerLogger> logger)
+    {
+        this.mLogger = logger;
+    }
+
+    public void Log(string message)
+    {
+        mLogger?.LogInformation(message);
+    }
+
+    public void LogLine(string message)
+    {
+        mLogger?.LogInformation(message);
+    }
 }
 ";
 
