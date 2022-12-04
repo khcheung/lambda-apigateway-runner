@@ -28,5 +28,3 @@ jobs:
         context: .
         push: true
         tags: alexcheung/lambdaapigatewayrunner:$(date +%s)
-        cache-from: type=registry,ref=user/app:buildcache
-        cache-to: type=registry,ref=user/app:buildcache,mode=max
