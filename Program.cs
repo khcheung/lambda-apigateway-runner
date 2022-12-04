@@ -193,21 +193,20 @@ internal class RunnerContext : ILambdaContext
 }
 
 internal class RunnerLogger : ILambdaLogger
-{
-    private ILogger<RunnerLogger> mLogger = null!;
-    public RunnerLogger(ILogger<RunnerLogger> logger)
+{    
+    public RunnerLogger()
     {
-        this.mLogger = logger;
+ 
     }
 
     public void Log(string message)
     {
-        mLogger?.LogInformation(message);
+        Console.WriteLine(message);
     }
 
     public void LogLine(string message)
     {
-        mLogger?.LogInformation(message);
+        Console.WriteLine(message);
     }
 }
 ";
