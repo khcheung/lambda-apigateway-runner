@@ -14,6 +14,14 @@ jobs:
 
     steps:
       -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: alexcheung/lambdaapigatewayrunner
+          tags: |
+            type=raw,value={{date 'YYYYMMDD'}}    
+      -
         name: Checkout
         uses: actions/checkout@v3
       -
@@ -34,4 +42,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: alexcheung/lambdaapigatewayrunner:latest
+          tags: ${{ steps.meta.outputs.tags }}
