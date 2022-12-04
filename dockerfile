@@ -3,4 +3,5 @@ WORKDIR /opt/generator
 RUN dotnet new console
 COPY ["Program.cs","."]
 COPY ["run.sh", "."]
+RUN chmod 755 /opt/generator/run.sh
 CMD /opt/generator/run.sh
