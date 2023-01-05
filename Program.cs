@@ -84,7 +84,7 @@ public class PackageProcessor
                 {
                     using (var entryStream = e.Open())
                     {
-                        var entryFileName = e.Name;
+                        var entryFileName = e.FullName;
                         var entryTargetFile = Path.Combine(mDestFolder, entryFileName);
                         e.ExtractToFile(entryTargetFile);
                         fileList.Add(entryFileName);
