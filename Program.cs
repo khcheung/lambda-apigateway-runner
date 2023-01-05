@@ -84,12 +84,13 @@ public class PackageProcessor
                 {
                     using (var entryStream = e.Open())
                     {
-                        var entryFileName = e.FullName;
-                        var entryTargetFile = Path.Combine(mDestFolder, entryFileName);
-                        e.ExtractToFile(entryTargetFile);
+                        var entryFileName = e.Name;
+                        //var entryTargetFile = Path.Combine(mDestFolder, entryFileName);
+                        //e.ExtractToFile(entryTargetFile);
                         fileList.Add(entryFileName);
                     }
                 });
+                zip.ExtractToDirectory(mDestFolder);
             }
             file.Close();
         }
