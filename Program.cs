@@ -171,7 +171,10 @@ public static class Program
 
                 var outputJson = JsonSerializer.Serialize(response);
                 var outputBuffer = System.Text.Encoding.UTF8.GetBytes(outputJson);
+                context.Response.Headers.Connection = ""close"";
                 await context.Response.Body.WriteAsync(outputBuffer, 0, outputBuffer.Length);
+                await context.Response.Body.FlushAsync();
+                context.Response.Body.Close();                                
             });
 
         await app.RunAsync();
